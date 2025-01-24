@@ -19,7 +19,7 @@
             text-align: center;
         }
         .container {
-            max-width: 1000px;
+            max-width: 600px;
             margin: 20px auto;
             background: white;
             padding: 20px;
@@ -72,43 +72,44 @@
         <table id="trolleyTable" style="display: none;">
             <thead>
                 <tr>
-                    <th>Trolley ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Status</th>
-                    <th>Last Updated</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <tr>
+                    <td id="dateCell"></td>
+                    <td id="timeCell"></td>
+                    <td id="statusCell"></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
     <script>
         async function fetchTrolleyData() {
             const sheetID = '1CcHGUCvTEhqKqg5iVRxiPh80UPDAlwX3RoPq4k-Vtjo'; // Replace with your Google Sheet ID
-            const sheetName = 'Sheet2'; // Specify the sheet name here
+            const sheetName = 'Sheet1'; // Specify the sheet name here
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.text();
-                const rows = data.split('\n').slice(1); // Skip the header row
+                const rows = data.split('\n');
+                
+                // Parse data from specific cells
+                const date = rows[0]?.split(',')[0]?.trim() || 'N/A'; // A1
+                const time = rows[0]?.split(',')[1]?.trim() || 'N/A'; // B1
+                const status = rows[0]?.split(',')[3]?.trim() || 'N/A'; // D1
 
-                const tableBody = document.querySelector('#trolleyTable tbody');
-                tableBody.innerHTML = ''; // Clear existing data
+                // Update the table
+                document.getElementById('dateCell').textContent = date;
+                document.getElementById('timeCell').textContent = time;
 
-                rows.forEach(row => {
-                    const [id, status, lastUpdated] = row.split(',');
-                    if (id && status && lastUpdated) {
-                        const statusClass = status.trim() === 'Active' ? 'status-active' : 'status-inactive';
-
-                        tableBody.innerHTML += `
-                            <tr>
-                                <td>${id}</td>
-                                <td class="${statusClass}">${status.trim()}</td>
-                                <td>${lastUpdated.trim()}</td>
-                            </tr>
-                        `;
-                    }
-                });
+                const statusCell = document.getElementById('statusCell');
+                statusCell.textContent = status;
+                statusCell.className = status === 'Active' ? 'status-active' : 'status-inactive';
 
                 // Show the table and hide the loading indicator
                 document.getElementById('loading').style.display = 'none';
