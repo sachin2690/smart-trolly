@@ -5,107 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Gateway - Shopping Mall</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-        }
-        header img {
-            height: 50px;
-        }
-        header nav {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-        }
-        header nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        .heading {
-            color: #000000;
-            font-size: 1.5rem;
-            flex: 1;
-            text-align: center;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .dropdown {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .dropdown select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .total {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .payment-options {
-            margin-top: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .payment-options button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-        }
-        .payment-options img {
-            width: 80px;
-            height: auto;
-            border-radius: 5px;
-            transition: transform 0.3s;
-        }
-        .payment-options img:hover {
-            transform: scale(1.1);
-        }
-        .payment-options p {
-            margin: 5px 0 0;
-            font-size: 14px;
-        }
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .heading {
-                margin: 10px 0;
-            }
-            .payment-options img {
-                width: 70px;
-            }
-        }
+        /* Existing CSS */
     </style>
 </head>
 <body>
@@ -147,13 +47,14 @@
     <script>
         async function fetchTotalAmount() {
             const sheetID = '1CcHGUCvTEhqKqg5iVRxiPh80UPDAlwX3RoPq4k-Vtjo'; // Replace with your Google Sheet ID
-            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv`;
+            const sheet3Gid = '202892615'; // Replace with the GID for Sheet 3
+            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&gid=${sheet3Gid}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.text();
                 const rows = data.split('\n');
-                const total = rows[1].split(',')[1]; // Adjust index as per your Google Sheet structure
+                const total = rows[1].split(',')[1]; // Adjust index based on Sheet 3's structure
                 document.getElementById('totalAmount').textContent = total;
             } catch (error) {
                 console.error('Error fetching total amount:', error);
