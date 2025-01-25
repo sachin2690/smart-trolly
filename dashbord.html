@@ -17,6 +17,48 @@
             color: white;
             padding: 10px 20px;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar img {
+            height: 40px; /* Logo size */
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 20px;
+        }
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .navbar .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #4CAF50;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .navbar .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .navbar .dropdown-content a:hover {
+            background-color: #45a049;
         }
         .container {
             max-width: 900px;
@@ -30,33 +72,6 @@
             text-align: center;
             margin-bottom: 20px;
             color: #333;
-        }
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 20px;
-        }
-        .dashboard .card {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 30%;
-            padding: 20px;
-            text-align: center;
-        }
-        .dashboard .card img {
-            max-width: 50%;
-            margin-bottom: 10px;
-        }
-        .card .title {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .card .value {
-            font-size: 2rem;
-            color: #4CAF50;
         }
         table {
             width: 100%;
@@ -90,33 +105,26 @@
 </head>
 <body>
     <header>
-        <h1>Smart Trolley System Dashboard</h1>
+        <div class="navbar">
+            <img src="your-logo.png" alt="Company Logo"> <!-- Replace with your logo image -->
+            <div>
+                <a href="home.html">Home</a>
+                <a href="tel:770085614">Contact</a>
+                <a href="#">About</a>
+                <div class="dropdown">
+                    <a href="javascript:void(0)">More</a>
+                    <div class="dropdown-content">
+                        <a href="#">Product</a>
+                        <a href="#">Service</a>
+                        <a href="#">Trolley</a>
+                        <a href="#">Payment Gateway</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-        <div class="dashboard">
-            <!-- Card for Total Trolleys -->
-            <div class="card">
-                <img src="trolley-icon.png" alt="Total Trolleys">
-                <div class="title">Total Trolleys</div>
-                <div id="totalTrolleys" class="value">0</div>
-            </div>
-
-            <!-- Card for Active Trolleys -->
-            <div class="card">
-                <img src="trolley-icon.png" alt="Active Trolleys">
-                <div class="title">Active Trolleys</div>
-                <div id="activeTrolleys" class="value">0</div>
-            </div>
-
-            <!-- Card for Offline Trolleys -->
-            <div class="card">
-                <img src="trolley-icon.png" alt="Offline Trolleys">
-                <div class="title">Offline Trolleys</div>
-                <div id="offlineTrolleys" class="value">0</div>
-            </div>
-        </div>
-
         <h1>Trolley Status</h1>
         <div id="loading" class="loading">Fetching data...</div>
         <table id="trolleyTable" style="display: none;">
@@ -164,16 +172,6 @@
                 // Show the table and hide the loading indicator
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('trolleyTable').style.display = 'table';
-
-                // Update the dashboard values (Total, Active, Offline Trolleys)
-                const totalTrolleys = rows.length - 1; // You can calculate or get this from a specific column in your Google Sheets
-                const activeTrolleys = 5; // Replace this with actual active trolley data (use a specific column)
-                const offlineTrolleys = totalTrolleys - activeTrolleys;
-
-                document.getElementById('totalTrolleys').textContent = totalTrolleys;
-                document.getElementById('activeTrolleys').textContent = activeTrolleys;
-                document.getElementById('offlineTrolleys').textContent = offlineTrolleys;
-
             } catch (error) {
                 console.error('Error fetching trolley data:', error);
                 document.getElementById('loading').textContent = 'Failed to fetch data. Please try again later.';
