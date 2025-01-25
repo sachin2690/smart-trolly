@@ -27,6 +27,12 @@
         }
         .navbar img {
             height: 40px; /* Logo size */
+            margin-right: 20px; /* Space between logo and the menu */
+        }
+        .navbar .navbar-links {
+            display: flex;
+            justify-content: center;
+            flex: 1;
         }
         .navbar a {
             color: white;
@@ -97,12 +103,6 @@
             color: #777;
             font-size: 16px;
         }
-        .loading {
-            text-align: center;
-            color: #888;
-            font-size: 18px;
-            margin-top: 20px;
-        }
 
         /* Responsive Styles */
         @media (max-width: 768px) {
@@ -131,7 +131,7 @@
     <header>
         <div class="navbar">
             <img src="your-logo.png" alt="Company Logo"> <!-- Replace with your logo image -->
-            <div>
+            <div class="navbar-links">
                 <a href="home.html">Home</a>
                 <a href="tel:770085614">Contact</a>
                 <a href="#">About</a>
