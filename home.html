@@ -98,12 +98,12 @@
                 const data = await response.text();
                 const rows = data.split('\n');
                 
-                // Parse data from specific cells
-                const date = rows[0]?.split(',')[0]?.trim() || 'N/A'; // A1
-                const time = rows[0]?.split(',')[1]?.trim() || 'N/A'; // B1
-                const status = rows[0]?.split(',')[3]?.trim() || 'N/A'; // D1
+                // Parse data from specific cells (split by commas)
+                const date = rows[0]?.split(',')[0]?.trim().replace(/"/g, '') || 'N/A'; // A1 (Remove quotes)
+                const time = rows[0]?.split(',')[1]?.trim().replace(/"/g, '') || 'N/A'; // B1 (Remove quotes)
+                const status = rows[0]?.split(',')[3]?.trim().replace(/"/g, '') || 'N/A'; // D1 (Remove quotes)
 
-                // Update the table
+                // Update the table with cleaned values
                 document.getElementById('dateCell').textContent = date;
                 document.getElementById('timeCell').textContent = time;
 
