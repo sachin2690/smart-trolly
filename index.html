@@ -143,9 +143,18 @@
             try {
                 const response = await fetch(url);
                 const data = await response.text();
+                
+                // Split the CSV data into rows
                 const rows = data.split('\n');
-                const total = rows[1].split(',')[1]; // Adjust index based on Sheet 3's structure
-                document.getElementById('totalAmount').textContent = total;
+                
+                // Get the total amount from the second row (adjust the index if necessary)
+                const total = rows[1].split(',')[1]; 
+                
+                // Remove quotation marks around the value (if any)
+                const cleanTotal = total.replace(/"/g, ''); 
+                
+                // Display the cleaned total value in the HTML
+                document.getElementById('totalAmount').textContent = cleanTotal;
             } catch (error) {
                 console.error('Error fetching total amount:', error);
             }
