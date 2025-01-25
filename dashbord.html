@@ -95,18 +95,18 @@
 
     <div class="container">
         <div class="dashboard">
-            <!-- Card for Active Trolleys -->
-            <div class="card">
-                <img src="trolley-icon.png" alt="Active Trolleys">
-                <div class="title">Active Trolleys</div>
-                <div id="activeTrolleys" class="value">0</div>
-            </div>
-
             <!-- Card for Total Trolleys -->
             <div class="card">
                 <img src="trolley-icon.png" alt="Total Trolleys">
                 <div class="title">Total Trolleys</div>
                 <div id="totalTrolleys" class="value">0</div>
+            </div>
+
+            <!-- Card for Active Trolleys -->
+            <div class="card">
+                <img src="trolley-icon.png" alt="Active Trolleys">
+                <div class="title">Active Trolleys</div>
+                <div id="activeTrolleys" class="value">0</div>
             </div>
 
             <!-- Card for Offline Trolleys -->
@@ -165,13 +165,13 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('trolleyTable').style.display = 'table';
 
-                // Update dashboard values
-                const activeTrolleys = 5; // Example data, replace with dynamic value
-                const totalTrolleys = 20; // Example data, replace with dynamic value
+                // Update the dashboard values (Total, Active, Offline Trolleys)
+                const totalTrolleys = rows.length - 1; // You can calculate or get this from a specific column in your Google Sheets
+                const activeTrolleys = 5; // Replace this with actual active trolley data (use a specific column)
                 const offlineTrolleys = totalTrolleys - activeTrolleys;
 
-                document.getElementById('activeTrolleys').textContent = activeTrolleys;
                 document.getElementById('totalTrolleys').textContent = totalTrolleys;
+                document.getElementById('activeTrolleys').textContent = activeTrolleys;
                 document.getElementById('offlineTrolleys').textContent = offlineTrolleys;
 
             } catch (error) {
