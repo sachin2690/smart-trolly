@@ -73,10 +73,18 @@
             rows.slice(1).forEach(row => {
                 if (row.length > 1) {
                     const newRow = document.createElement("tr");
-                    row.forEach(cell => {
+                    row.forEach((cell, index) => {
                         const newCell = document.createElement("td");
-                        // Remove quotes from the cell content
-                        newCell.textContent = cell.replace(/"/g, '');
+
+                        if (index === 0) {
+                            // Extract only the date part from the date-time string
+                            const dateOnly = cell.split(' ')[0].replace(/"/g, ''); // Remove time and quotes
+                            newCell.textContent = dateOnly;
+                        } else {
+                            // Remove quotes for other cells
+                            newCell.textContent = cell.replace(/"/g, '');
+                        }
+
                         newRow.appendChild(newCell);
                     });
                     table.appendChild(newRow);
