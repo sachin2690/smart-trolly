@@ -75,7 +75,8 @@
                     const newRow = document.createElement("tr");
                     row.forEach(cell => {
                         const newCell = document.createElement("td");
-                        newCell.textContent = cell;
+                        // Remove quotes from the cell content
+                        newCell.textContent = cell.replace(/"/g, '');
                         newRow.appendChild(newCell);
                     });
                     table.appendChild(newRow);
