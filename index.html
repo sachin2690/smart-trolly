@@ -30,9 +30,10 @@
             padding: 15px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             border-bottom: 3px solid #135ab5;
             position: relative;
+            flex-wrap: wrap;
         }
         nav img {
             width: 50px;
@@ -44,10 +45,10 @@
             font-weight: bold;
             color: #fff;
             letter-spacing: 1px;
+            text-align: center;
+            flex: 1;
         }
         nav a {
-            position: absolute;
-            left: 15px;
             color: #fff;
             text-decoration: none;
             font-size: 1.2em;
@@ -102,6 +103,22 @@
         }
         .payment-card a:hover {
             text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 10px;
+            }
+            nav h1 {
+                font-size: 1.5em;
+                margin-top: 10px;
+            }
+            nav a {
+                position: static;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -158,8 +175,6 @@
         function makePayment(method) {
             alert(`Payment initiated via ${method}.`);
         }
-
-     
 
         window.onload = fetchTotalAmount;
     </script>
