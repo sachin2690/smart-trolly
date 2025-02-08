@@ -3,161 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Mall</title>
+    <title>Bank Payment Gateway</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fb;
+            color: #333;
+            line-height: 1.6;
         }
         .container {
+            width: 90%;
             max-width: 800px;
             margin: 50px auto;
             background: white;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-        header {
+        nav {
+            background-color: #1a73e8;
+            padding: 15px;
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+            justify-content: center;
+            border-bottom: 3px solid #135ab5;
+            position: relative;
         }
-        header img {
-            height: 50px;
+        nav img {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
         }
-        header nav {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
+        nav h1 {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 1px;
         }
-        header nav a {
-            color: white;
+        nav a {
+            position: absolute;
+            left: 15px;
+            color: #fff;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 15px;
         }
-        .heading {
-            color: #000000;
-            font-size: 1.5rem;
-            flex: 1;
-            text-align: center;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
+        nav a:hover {
+            background-color: #135ab5;
+            border-radius: 5px;
         }
         .total {
             text-align: center;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
             margin-top: 20px;
+            color: #1a73e8;
         }
         .payment-options {
             margin-top: 30px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
-        .payment-options button {
-            background: none;
-            border: none;
-            cursor: pointer;
+        .payment-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 220px;
+            padding: 25px 20px;
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .payment-options img {
-            width: 80px;
+        .payment-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: #1a73e8;
+        }
+        .payment-card img {
+            width: 120px;
             height: auto;
-            border-radius: 5px;
-            transition: transform 0.3s;
+            margin-bottom: 20px;
         }
-        .payment-options img:hover {
-            transform: scale(1.1);
+        .payment-card a {
+            display: block;
+            margin-top: 15px;
+            color: #1a73e8;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1em;
         }
-        .payment-options p {
-            margin: 5px 0 0;
-            font-size: 14px;
-        }
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .heading {
-                margin: 10px 0;
-            }
-            .payment-options img {
-                width: 70px;
-            }
+        .payment-card a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <header>
-        <img src="cu.png" alt="Company Logo">
-        <div class="heading">Smart Trolly System</div>
-        <nav>
-            <a href="home.html">Home</a>
-            <a href="tel:770085614">Contact</a>
-            <a href="dashbord.html">Dashboard</a>
-        </nav>
-    </header>
+    <nav>
+        <a href="dashbord.html">&#8592; Back</a>
+        <img src="cart.webp" alt="Bank Logo">
+        <h1>Bank Payment Gateway</h1>
+    </nav>
 
     <div class="container">
-        <h1>Payment Gateway</h1>
-
         <div class="total">Total: ₹<span id="totalAmount">0</span></div>
 
         <div class="payment-options">
-            <a id="upiLink" href="#" target="_blank">
-                <button>
+            <div class="payment-card">
+                <a id="upiLink" href="upi.html" target="_blank">
                     <img src="upi.png" alt="UPI Payment">
-                    <p>UPI</p>
-                </button>
-            </a>
-            <a href="bank.html">
-                <button>
-                    <img src="internet.png" alt="Internet Banking Payment">
-                    <p>Internet Banking</p>
-                </button>
-            </a>
-            <button onclick="makePayment('Credit Card')">
-                <img src="card.jpeg" alt="Credit Card Payment">
-                <p>Card Payment</p>
-            </button>
-        </div>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="home.html" style="text-decoration: none; color: #4CAF50; font-weight: bold;">Return to Home</a>
+                    <div><span>UPI Payment</span></div>
+                </a>
+            </div>
+            <div class="payment-card">
+                <a href="bank.html">
+                    <img src="internet.png" alt="Internet Banking">
+                    <div><span>Internet Banking</span></div>
+                </a>
+            </div>
+            <div class="payment-card">
+                <a href="#" onclick="makePayment('Credit Card')">
+                    <img src="card.jpeg" alt="Credit Card">
+                    <div><span>Credit Card Payment</span></div>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
         async function fetchTotalAmount() {
-            const sheetID = '1-GNjfxoLXrgXg7rgiKC_7M1kdTvXK6cioXklAveUUsA'; // Replace with your Google Sheet ID
-            const sheet3Gid = '2121045529'; // Replace with the GID for Sheet 3
+            const sheetID = '1-GNjfxoLXrgXg7rgiKC_7M1kdTvXK6cioXklAveUUsA'; 
+            const sheet3Gid = '2121045529'; 
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&gid=${sheet3Gid}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.text();
-                
-                // Split the CSV data into rows
                 const rows = data.split('\n');
-                
-                // Get the total amount from cell C2 (column 3, row 1)
-                const total = rows[1].split(',')[2]; // Fetch value from C2
-                
-                // Remove quotation marks around the value (if any)
+                const total = rows[1].split(',')[2]; 
                 const cleanTotal = total.replace(/"/g, ''); 
-                
-                // Display the cleaned total value in the HTML
                 document.getElementById('totalAmount').textContent = cleanTotal;
             } catch (error) {
                 console.error('Error fetching total amount:', error);
@@ -168,18 +159,9 @@
             alert(`Payment initiated via ${method}.`);
         }
 
-        // Open Google Pay link when UPI button is clicked
-        document.getElementById('upiLink').addEventListener('click', function() {
-            window.open('https://pay.google.com', '_blank');  // Google Pay link
-        });
+     
 
-        // Fetch total amount when the page loads
         window.onload = fetchTotalAmount;
-
-        // Refresh the page every 10 seconds
-        setInterval(function() {
-            window.location.reload();
-        }, 10000);
     </script>
 </body>
 </html>
