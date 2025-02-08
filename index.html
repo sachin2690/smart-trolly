@@ -121,10 +121,12 @@
                     <p>UPI</p>
                 </button>
             </a>
-            <button onclick="makePayment('Internet Banking')">
-                <img src="internet.png" alt="Internet Banking Payment">
-                <p>Internet Banking</p>
-            </button>
+            <a href="bank.html">
+                <button>
+                    <img src="internet.png" alt="Internet Banking Payment">
+                    <p>Internet Banking</p>
+                </button>
+            </a>
             <button onclick="makePayment('Credit Card')">
                 <img src="card.jpeg" alt="Credit Card Payment">
                 <p>Card Payment</p>
@@ -174,7 +176,7 @@
         // Fetch total amount when the page loads
         window.onload = fetchTotalAmount;
 
-        // Refresh the page every 3 seconds
+        // Refresh the page every 10 seconds
         setInterval(function() {
             window.location.reload();
         }, 10000);

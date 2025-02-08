@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Options - Cartify</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f7fb;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+
+    nav {
+      background-color: #1a73e8;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 3px solid #135ab5;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    nav img {
+      width: 50px;
+      height: auto;
+      margin-right: 15px;
+    }
+
+    .nav-content {
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    nav h1 {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    nav a {
+      position: absolute;
+      left: 15px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 10px 15px;
+      display: inline-block;
+    }
+
+    nav a:hover {
+      background-color: #135ab5;
+      border-radius: 5px;
+    }
+
+    .payment-methods {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .payment-card {
+      background-color: #ffffff;
+      border-radius: 15px;
+      border: 2px solid #ddd;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 250px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .payment-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      border-color: #1a73e8;
+    }
+
+    .payment-card img {
+      width: 150px; /* Increased logo size */
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .payment-card a {
+      display: block;
+      margin-top: 15px;
+      color: #1a73e8;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+
+    .payment-card a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+      }
+
+      .nav-content {
+        flex-direction: column;
+      }
+
+      nav h1 {
+        font-size: 1.5em;
+        margin-top: 10px;
+      }
+
+      nav a {
+        position: static;
+        margin-bottom: 10px;
+      }
+
+      .payment-methods {
+        justify-content: center;
+      }
+
+      .payment-card {
+        width: 200px;
+        padding: 25px 15px;
+      }
+
+      .payment-card img {
+        width: 120px; /* Adjust for smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="javascript:history.back()">&#8592; Back</a>
+    <div class="nav-content">
+      <img src="cart.webp" alt="Cartify Logo">
+      <h1>Cartify Payment Options</h1>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="payment-methods">
+      <div class="payment-card">
+        <a href="https://retail.onlinesbi.sbi/retail/login.htm" target="_blank">
+          <img src="sbi.jpg" alt="SBI Logo">
+
+          <div><span>SBI - Secure Banking</span></div>
+        </a>
+      </div>
+      <div class="payment-card">
+        <a href="https://netbanking.hdfcbank.com/netbanking/" target="_blank">
+          <img src="hdfc.png" alt="HDFC Bank Logo">
+          <div><span>HDFC Bank - Smart Finance</span></div>
+        </a>
+      </div>
+      <div class="payment-card">
+        <a href="https://www.netpnb.com/" target="_blank">
+          <img src="pnb.png" alt="PNB Logo">
+          <div><span>PNB - Trust & Reliability</span></div>
+        </a>
+      </div>
+      <div class="payment-card">
+        <a href="https://www.centralbank.net.in/#/" target="_blank">
+          <img src="cbi.jpg" alt="CBI Logo">
+          <div><span>CBI - Customer First</span></div>
+        </a>
+      </div>
+      <div class="payment-card">
+        <a href="https://www.icicibank.com/personal-banking/insta-banking/internet-banking" target="_blank">
+          <img src="icici.png" alt="ICICI Bank Logo">
+          <div><span>ICICI Bank - Innovative Banking</span></div>
+        </a>
+      </div>
+      <div class="payment-card">
+        <a href="https://www.axisbank.com/" target="_blank">
+          <img src="axis.jpg" alt="Axis Bank Logo">
+          <div><span>Axis Bank - Next Level Banking</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
