@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Summary</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        #bill-id {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #total-bill {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #total-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #E91E63;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            table-layout: auto;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #f8f8f8;
+            color: #333;
+            font-weight: normal;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        /* Responsive Table */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            #bill-id {
+                font-size: 1rem;
+            }
+
+            table, th, td {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            #total-bill {
+                font-size: 1.2rem;
+            }
+
+            #total-price {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            table, th, td {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            #total-bill {
+                font-size: 1.1rem;
+            }
+
+            #total-price {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bill Summary</h1>
+        <div id="bill-id"></div>
+        <table id="bill-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Item</th>
+                    <th>Item Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="bill-body">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+        <div id="total-bill">
+            <h3>Total Bill: <span id="total-price"></span></h3>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // Google Sheets details
+        const SPREADSHEET_ID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; // Replace with your sheet ID
+        const RANGE = 'Sheet1'; // Assuming 'Sheet1' has the data
+        let totalBill = 0;
+
+        function loadData() {
+            // Authenticate and load the Google Sheets data
+            gapi.client.init({
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+            }).then(() => {
+                return gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: SPREADSHEET_ID,
+                    range: RANGE,  // Specify the range or leave empty for entire sheet
+                });
+            }).then((response) => {
+                const data = response.result.values;
+                let billId = data[1][8];  // Assuming Bill ID is in column 'I', row 2
+                document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
+
+                // Clear existing data in table
+                const tbody = document.getElementById('bill-body');
+                tbody.innerHTML = '';
+
+                // Loop through each row and populate the table
+                data.slice(1).forEach((row, index) => {
+                    const time = row[0];
+                    const item = row[1];
+                    const itemPrice = parseFloat(row[2]);
+                    const quantity = parseInt(row[3]);
+                    const total = itemPrice * quantity;
+                    totalBill += total;
+
+                    // Create a row for the table
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${time}</td>
+                        <td>${item}</td>
+                        <td>${itemPrice}</td>
+                        <td>${quantity}</td>
+                        <td>${total}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Update the total bill
+                document.getElementById('total-price').innerText = totalBill.toFixed(2);
+            }).catch((error) => {
+                console.error("Error fetching data from Google Sheets:", error);
+            });
+        }
+
+        function init() {
+            gapi.load('client', loadData);
+        }
+
+        // Load the data when the page is loaded
+        window.onload = init;
+    </script>
+</body>
+</html>
