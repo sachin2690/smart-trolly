@@ -184,7 +184,7 @@
 
                 const values = data.values; // Data from Google Sheets
 
-                // Assuming Bill ID is in row 2, column 'I' (index 8)
+                // Fetch the Bill ID from column I (index 8)
                 const billId = values[1][8]; 
                 document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
 
@@ -194,11 +194,11 @@
 
                 // Loop through each row and populate the table
                 values.slice(1).forEach((row) => {
-                    const time = row[0];
-                    const item = row[1];
-                    const itemPrice = parseFloat(row[2]);
-                    const quantity = parseInt(row[3]);
-                    const total = itemPrice * quantity;
+                    const time = row[0];  // Column A
+                    const item = row[1];  // Column B
+                    const itemPrice = parseFloat(row[2]);  // Column C
+                    const quantity = parseInt(row[3]);  // Column D
+                    const total = itemPrice * quantity;  // Column E (Total calculation)
                     totalBill += total;
 
                     // Create a row for the table
@@ -213,7 +213,7 @@
                     tbody.appendChild(tr);
                 });
 
-                // Update the total bill
+                // Update the total bill (Cell F1 will contain the total price)
                 document.getElementById('total-price').innerText = totalBill.toFixed(2);
             } catch (error) {
                 console.error("Error fetching data from Google Sheets:", error);
