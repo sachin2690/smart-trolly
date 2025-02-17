@@ -169,60 +169,52 @@
     </div>
 
     <script>
-        // Google Sheets details
-        const SPREADSHEET_ID = '1Qsimsixo8SGtzZLxmSUNtnD9tI9sz2mkSjLsTtuzxLk'; // Replace with your sheet ID
-        const RANGE = 'Sheet1'; // Assuming 'Sheet1' has the data
-        let totalBill = 0;
-
-        // Construct the Google Sheets API URL
-        const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=YOUR_API_KEY`;  // Replace YOUR_API_KEY with your actual API key
+        const SPREADSHEET_ID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY';
+        const GID = '0'; // Sheet's GID
+        const sheetURL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
 
         async function fetchData() {
             try {
                 const response = await fetch(sheetURL);
-                const data = await response.json();
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                const csvData = await response.text();
+                const rows = csvData.split('\n').map(row => row.split(','));
 
-                const values = data.values; // Data from Google Sheets
-
-                if (values.length > 0) {
-                    // Fetch the Bill ID from column I (index 8)
-                    const billId = values[1][8];  // Assuming Bill ID is in row 2 (index 1) and column I (index 8)
+                if (rows && rows.length > 1) {
+                    // Fetch the Bill ID (example: column I)
+                    const billId = rows[1][8] || 'N/A'; // Update the index based on the column where the Bill ID is
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
 
-                    // Clear existing data in table
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
+                    let totalBill = 0;
 
-                    // Loop through each row and populate the table
-                    values.slice(1).forEach((row) => {
-                        const time = row[0];  // Column A
-                        const item = row[1];  // Column B
-                        const itemPrice = parseFloat(row[2]);  // Column C
-                        const quantity = parseInt(row[3]);  // Column D
-                        const total = itemPrice * quantity;  // Column E (Total calculation)
+                    rows.slice(1).forEach(row => {
+                        const time = row[0] || 'N/A';
+                        const item = row[1] || 'N/A';
+                        const itemPrice = parseFloat(row[2]) || 0;
+                        const quantity = parseInt(row[3]) || 0;
+                        const total = itemPrice * quantity;
                         totalBill += total;
 
-                        // Create a row for the table
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${time}</td>
                             <td>${item}</td>
-                            <td>${itemPrice}</td>
+                            <td>${itemPrice.toFixed(2)}</td>
                             <td>${quantity}</td>
-                            <td>${total}</td>
+                            <td>${total.toFixed(2)}</td>
                         `;
                         tbody.appendChild(tr);
                     });
 
-                    // Update the total bill (Cell F1 will contain the total price)
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
                 }
             } catch (error) {
-                console.error("Error fetching data from Google Sheets:", error);
+                console.error('Error fetching data:', error.message);
             }
         }
 
-        // Fetch the data when the page loads
         window.onload = fetchData;
     </script>
 </body>
