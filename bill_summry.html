@@ -172,31 +172,33 @@
         const SPREADSHEET_ID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY';
         const GID = '0'; // Sheet's GID
         const sheetURL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
-
+    
         async function fetchData() {
             try {
                 const response = await fetch(sheetURL);
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 const csvData = await response.text();
                 const rows = csvData.split('\n').map(row => row.split(','));
-
+    
                 if (rows && rows.length > 1) {
-                    const billId = rows[1][5] || 'N/A'; // Bill ID from F2
+                    // Fetch Bill ID and Total Bill
+                    const billId = rows[1][5] || 'N/A'; // F2
+                    const totalBill = parseFloat(rows[1][6].replace(/[^0-9.-]+/g, '')) || 0; // G2 (strip non-numeric characters)
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
-
-                    const totalBillValue = rows[1][6] || '0.00'; // Total Bill from G2
-                    document.getElementById('total-price').innerText = parseFloat(totalBillValue).toFixed(2);
-
+                    document.getElementById('total-price').innerText = totalBill.toFixed(2);
+    
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
-
+                    let calculatedTotal = 0;
+    
                     rows.slice(1).forEach(row => {
-                        const time = row[0] || 'N/A'; // Timestamp from A2 onwards
-                        const item = row[1] || 'N/A'; // Item from B2 onwards
-                        const itemPrice = parseFloat(row[2]) || 0; // Price from C2 onwards
-                        const quantity = parseInt(row[3]) || 0; // Quantity from D2 onwards
-                        const total = parseFloat(row[4]) || 0; // Total from E2 onwards
-
+                        const time = row[0] || 'N/A'; // A2
+                        const item = row[1] || 'N/A'; // B2
+                        const itemPrice = parseFloat(row[2]) || 0; // C2
+                        const quantity = parseInt(row[3]) || 0; // D2
+                        const total = parseFloat(row[4]) || 0; // E2
+                        calculatedTotal += total;
+    
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${time}</td>
@@ -212,8 +214,10 @@
                 console.error('Error fetching data:', error.message);
             }
         }
-
+    
         window.onload = fetchData;
+    </script>
+    
     </script>
 </body>
 </html>
