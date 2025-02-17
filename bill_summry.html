@@ -181,21 +181,21 @@
                 const rows = csvData.split('\n').map(row => row.split(','));
 
                 if (rows && rows.length > 1) {
-                    // Fetch the Bill ID (example: column I)
-                    const billId = rows[1][8] || 'N/A'; // Update the index based on the column where the Bill ID is
+                    const billId = rows[1][5] || 'N/A'; // Bill ID from F2
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
+
+                    const totalBillValue = rows[1][6] || '0.00'; // Total Bill from G2
+                    document.getElementById('total-price').innerText = parseFloat(totalBillValue).toFixed(2);
 
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
-                    let totalBill = 0;
 
                     rows.slice(1).forEach(row => {
-                        const time = row[0] || 'N/A';
-                        const item = row[1] || 'N/A';
-                        const itemPrice = parseFloat(row[2]) || 0;
-                        const quantity = parseInt(row[3]) || 0;
-                        const total = itemPrice * quantity;
-                        totalBill += total;
+                        const time = row[0] || 'N/A'; // Timestamp from A2 onwards
+                        const item = row[1] || 'N/A'; // Item from B2 onwards
+                        const itemPrice = parseFloat(row[2]) || 0; // Price from C2 onwards
+                        const quantity = parseInt(row[3]) || 0; // Quantity from D2 onwards
+                        const total = parseFloat(row[4]) || 0; // Total from E2 onwards
 
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
@@ -207,8 +207,6 @@
                         `;
                         tbody.appendChild(tr);
                     });
-
-                    document.getElementById('total-price').innerText = totalBill.toFixed(2);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error.message);
