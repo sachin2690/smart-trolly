@@ -198,19 +198,19 @@
                 const csvData = await response.text();
                 const rows = csvData.split('\n').map(row => row.split(','));
 
-                if (rows && rows.length > 2) { // Start from row 3
+                if (rows && rows.length > 3) { // Start from row 3
                     const billId = rows[1][5]?.trim() || 'N/A'; // F2
                     const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // G2
-                    const lastTime = rows[rows.length - 1][0]?.trim() || 'N/A'; // Last Time
+                    const firstTime = rows[2][0]?.trim() || 'N/A'; // Time from A3
 
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
-                    document.getElementById('time-label').innerText = `Time: ${lastTime}`;
+                    document.getElementById('time-label').innerText = `Time: ${firstTime}`;
 
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
 
-                    rows.slice(2).forEach(row => { // Start tracking from A3 to E3
+                    rows.slice(2, -1).forEach(row => { // Ignore the last row
                         const item = row[1]?.replace(/"/g, '').trim() || 'N/A'; // Remove quotation marks
                         const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '')?.trim()) || 0;
                         const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '')?.trim()) || 0;
