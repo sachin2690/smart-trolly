@@ -188,27 +188,9 @@
 
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
-                    let calculatedTotal = 0;
-
-                    rows.slice(1).forEach(row => {
-                        const time = row[0]?.trim() || 'N/A'; // A2
-                        const item = row[1]?.trim() || 'N/A'; // B2
-                        const itemPrice = parseFloat(row[2]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // C2
-                        const quantity = parseInt(row[3]?.trim()) || 0; // D2
-                        const total = parseFloat(row[4]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // E2
-
-                        calculatedTotal += total;
-
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${time}</td>
-                            <td>${item}</td>
-                            <td>${itemPrice.toFixed(2)}</td>
-                            <td>${quantity}</td>
-                            <td>${total.toFixed(2)}</td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
+                    
+                    // Instead of adding rows, just log the removal of table row tracking
+                    console.log('Row data tracking from A2 to E2 removed');
                 }
             } catch (error) {
                 console.error('Error fetching data:', error.message);
