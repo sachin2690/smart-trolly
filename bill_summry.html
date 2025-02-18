@@ -199,7 +199,7 @@
                 const rows = csvData.split('\n').map(row => row.split(','));
 
                 if (rows && rows.length > 3) { // Start from row 3
-                    const billId = rows[1][5]?.trim() || 'N/A'; // F2
+                    const billId = rows[2][8]?.trim() || 'N/A'; // I3 for Bill ID
                     const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // G2
                     const firstTime = rows[2][0]?.trim() || 'N/A'; // Time from A3
 
