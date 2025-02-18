@@ -31,6 +31,17 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
+            position: relative;
+        }
+
+        .time-label {
+            position: absolute;
+            top: 20px;
+            left: -200px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
         }
 
         h1 {
@@ -112,6 +123,13 @@
             #total-price {
                 font-size: 1.3rem;
             }
+
+            .time-label {
+                left: 0;
+                top: -40px;
+                position: relative;
+                margin-bottom: 20px;
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -147,12 +165,12 @@
 </head>
 <body>
     <div class="container">
+        <div id="time-label" class="time-label"></div>
         <h1>Bill Summary</h1>
         <div id="bill-id"></div>
         <table id="bill-table">
             <thead>
                 <tr>
-                    <th>Time</th>
                     <th>Item</th>
                     <th>Item Price</th>
                     <th>Quantity</th>
@@ -183,22 +201,23 @@
                 if (rows && rows.length > 2) { // Start from row 3
                     const billId = rows[1][5]?.trim() || 'N/A'; // F2
                     const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // G2
+                    const lastTime = rows[rows.length - 1][0]?.trim() || 'N/A'; // Last Time
+
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
+                    document.getElementById('time-label').innerText = `Time: ${lastTime}`;
 
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
 
                     rows.slice(2).forEach(row => { // Start tracking from A3 to E3
-                        const time = row[0]?.trim() || 'N/A'; // A3
-                        const item = row[1]?.trim() || 'N/A'; // B3
-                        const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '')?.trim()) || 0; // Clean and parse C3
-                        const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '')?.trim()) || 0; // Clean and parse D3
-                        const total = parseFloat(row[4]?.replace(/[^0-9.]/g, '')?.trim()) || 0; // Clean and parse E3
+                        const item = row[1]?.replace(/"/g, '').trim() || 'N/A'; // Remove quotation marks
+                        const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '')?.trim()) || 0;
+                        const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '')?.trim()) || 0;
+                        const total = parseFloat(row[4]?.replace(/[^0-9.]/g, '')?.trim()) || 0;
 
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
-                            <td>${time}</td>
                             <td>${item}</td>
                             <td>${itemPrice.toFixed(2)}</td>
                             <td>${quantity}</td>
