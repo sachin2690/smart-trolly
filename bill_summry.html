@@ -190,11 +190,11 @@
                     tbody.innerHTML = '';
 
                     rows.slice(2).forEach(row => { // Start tracking from A3 to E3
-                        const time = row[0] || 'N/A'; // A3
-                        const item = row[1] || 'N/A'; // B3
-                        const itemPrice = parseFloat(row[2]) || 0; // C3
-                        const quantity = parseInt(row[3]) || 0; // D3
-                        const total = parseFloat(row[4]) || 0; // E3
+                        const time = row[0]?.trim() || 'N/A'; // A3
+                        const item = row[1]?.trim() || 'N/A'; // B3
+                        const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '')?.trim()) || 0; // Clean and parse C3
+                        const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '')?.trim()) || 0; // Clean and parse D3
+                        const total = parseFloat(row[4]?.replace(/[^0-9.]/g, '')?.trim()) || 0; // Clean and parse E3
 
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
