@@ -179,26 +179,26 @@
                 if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 const csvData = await response.text();
                 const rows = csvData.split('\n').map(row => row.split(','));
-    
+
                 if (rows && rows.length > 1) {
-                    // Fetch Bill ID and Total Bill
-                    const billId = rows[1][5] || 'N/A'; // F2
-                    const totalBill = parseFloat(rows[1][6].replace(/[^0-9.-]+/g, '')) || 0; // G2 (strip non-numeric characters)
+                    const billId = rows[1][5]?.trim() || 'N/A'; // F2
+                    const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // G2
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
-    
+
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
                     let calculatedTotal = 0;
-    
+
                     rows.slice(1).forEach(row => {
-                        const time = row[0] || 'N/A'; // A2
-                        const item = row[1] || 'N/A'; // B2
-                        const itemPrice = parseFloat(row[2]); // C2
-                        const quantity = parseInt(row[3]); // D2
-                        const total = parseFloat(row[4]); // E2
+                        const time = row[0]?.trim() || 'N/A'; // A2
+                        const item = row[1]?.trim() || 'N/A'; // B2
+                        const itemPrice = parseFloat(row[2]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // C2
+                        const quantity = parseInt(row[3]?.trim()) || 0; // D2
+                        const total = parseFloat(row[4]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // E2
+
                         calculatedTotal += total;
-    
+
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${time}</td>
@@ -216,8 +216,6 @@
         }
     
         window.onload = fetchData;
-    </script>
-    
     </script>
 </body>
 </html>
