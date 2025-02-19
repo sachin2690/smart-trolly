@@ -188,6 +188,7 @@
 
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
+                    document.getElementById('total-price').title = `Reference Total: ${totalBill.toFixed(2)}`; // Add tooltip
                     document.getElementById('time-label').innerText = `Time: ${firstTime}`;
 
                     const tbody = document.getElementById('bill-body');
