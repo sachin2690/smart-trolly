@@ -93,6 +93,27 @@
             background-color: #f8f8f8;
         }
 
+        .pay-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pay-button a {
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .pay-button a:hover {
+            background-color: #45a049;
+        }
+
         /* Responsive Table */
         @media screen and (max-width: 768px) {
             h1 {
@@ -167,6 +188,10 @@
                 </tr>
             </tfoot>
         </table>
+
+        <div class="pay-button">
+            <a href="index.html">Pay</a>
+        </div>
     </div>
 
     <script>
@@ -182,9 +207,9 @@
                 const rows = csvData.split('\n').map(row => row.split(','));
 
                 if (rows && rows.length > 2) { // Start from row 3
-                    const billId = rows[2][8]?.trim() || 'N/A'; // Bill ID from I3
+                    const billId = rows[2][8]?.replace(/"/g, '').trim() || 'N/A'; // Bill ID from I3
                     const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // Total Bill from G2
-                    const firstTime = rows[2][0]?.trim() || 'N/A'; // Time from A3
+                    const firstTime = rows[2][0]?.replace(/"/g, '').trim() || 'N/A'; // Time from A3
 
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
