@@ -157,17 +157,16 @@
 
     <script>
         async function fetchTotalAmount() {
-            const sheetID = '1-GNjfxoLXrgXg7rgiKC_7M1kdTvXK6cioXklAveUUsA'; 
-            const sheet3Gid = '2121045529'; 
-            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&gid=${sheet3Gid}`;
+            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; 
+            const sheetGid = '0'; 
+            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&gid=${sheetGid}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.text();
                 const rows = data.split('\n');
-                const total = rows[1].split(',')[2]; 
-                const cleanTotal = total.replace(/"/g, ''); 
-                document.getElementById('totalAmount').textContent = cleanTotal;
+                const totalBill = rows[1]?.split(',')[6]?.replace(/"/g, '').trim() || '0'; // G2 is the 7th column (index 6)
+                document.getElementById('totalAmount').textContent = totalBill;
             } catch (error) {
                 console.error('Error fetching total amount:', error);
             }
