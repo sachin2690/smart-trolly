@@ -37,7 +37,7 @@
         .time-label {
             position: absolute;
             top: 20px;
-            left: -200px;
+            left: 20px;
             font-size: 1rem;
             font-weight: bold;
             color: #333;
@@ -59,21 +59,10 @@
             text-align: center;
         }
 
-        #total-bill, #total-quantity {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        #total-price, #total-quantity-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #E91E63;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             table-layout: auto;
         }
 
@@ -98,6 +87,12 @@
             background-color: #f1f1f1;
         }
 
+        .summary-row td {
+            font-weight: bold;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+
         /* Responsive Table */
         @media screen and (max-width: 768px) {
             h1 {
@@ -116,19 +111,11 @@
                 padding: 8px;
             }
 
-            #total-bill, #total-quantity {
-                font-size: 1.2rem;
-            }
-
-            #total-price, #total-quantity-value {
-                font-size: 1.3rem;
-            }
-
             .time-label {
+                top: 0;
                 left: 0;
-                top: -40px;
                 position: relative;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
         }
 
@@ -152,14 +139,6 @@
             h1 {
                 font-size: 1.4rem;
             }
-
-            #total-bill, #total-quantity {
-                font-size: 1.1rem;
-            }
-
-            #total-price, #total-quantity-value {
-                font-size: 1.2rem;
-            }
         }
     </style>
 </head>
@@ -180,13 +159,14 @@
             <tbody id="bill-body">
                 <!-- Data will be populated here -->
             </tbody>
+            <tfoot>
+                <tr class="summary-row">
+                    <td colspan="2">Summary</td>
+                    <td id="total-quantity-value"></td>
+                    <td id="total-price"></td>
+                </tr>
+            </tfoot>
         </table>
-        <div id="total-bill">
-            <h3>Total Bill: <span id="total-price"></span></h3>
-        </div>
-        <div id="total-quantity">
-            <h3>Total Quantity: <span id="total-quantity-value"></span></h3>
-        </div>
     </div>
 
     <script>
