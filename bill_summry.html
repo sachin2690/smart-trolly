@@ -59,12 +59,12 @@
             text-align: center;
         }
 
-        #total-bill {
+        #total-bill, #total-quantity {
             text-align: center;
             margin-top: 20px;
         }
 
-        #total-price {
+        #total-price, #total-quantity-value {
             font-size: 1.5rem;
             font-weight: bold;
             color: #E91E63;
@@ -116,11 +116,11 @@
                 padding: 8px;
             }
 
-            #total-bill {
+            #total-bill, #total-quantity {
                 font-size: 1.2rem;
             }
 
-            #total-price {
+            #total-price, #total-quantity-value {
                 font-size: 1.3rem;
             }
 
@@ -153,11 +153,11 @@
                 font-size: 1.4rem;
             }
 
-            #total-bill {
+            #total-bill, #total-quantity {
                 font-size: 1.1rem;
             }
 
-            #total-price {
+            #total-price, #total-quantity-value {
                 font-size: 1.2rem;
             }
         }
@@ -183,6 +183,9 @@
         </table>
         <div id="total-bill">
             <h3>Total Bill: <span id="total-price"></span></h3>
+        </div>
+        <div id="total-quantity">
+            <h3>Total Quantity: <span id="total-quantity-value"></span></h3>
         </div>
     </div>
 
@@ -210,11 +213,15 @@
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
 
+                    let totalQuantity = 0; // Initialize total quantity
+
                     rows.slice(2).forEach(row => { // Start from A3 (index 2)
                         const item = row[1]?.replace(/"/g, '').trim() || 'N/A';
                         const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '').trim()) || 0;
                         const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '').trim()) || 0;
                         const total = parseFloat(row[4]?.replace(/[^0-9.]/g, '').trim()) || 0;
+
+                        totalQuantity += quantity; // Add quantity to total quantity
 
                         if (item && itemPrice && quantity) {
                             const tr = document.createElement('tr');
@@ -227,6 +234,9 @@
                             tbody.appendChild(tr);
                         }
                     });
+
+                    // Display total quantity
+                    document.getElementById('total-quantity-value').innerText = totalQuantity;
                 }
             } catch (error) {
                 console.error('Error fetching data:', error.message);
