@@ -171,9 +171,10 @@
         <table id="bill-table">
             <thead>
                 <tr>
+                    <th>Time</th>
                     <th>Item</th>
                     <th>Item Price</th>
-                    <th>Quantity</th>
+                    <th>Quantity (H3)</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -198,26 +199,26 @@
                 const csvData = await response.text();
                 const rows = csvData.split('\n').map(row => row.split(','));
 
-                if (rows && rows.length > 3) { // Start from row 3
-                    const billId = rows[2][8]?.trim() || 'N/A'; // I3 for Bill ID
-                    const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // G2
-                    const firstTime = rows[2][0]?.trim() || 'N/A'; // Time from A3
+                if (rows && rows.length > 1) { // Start from row 2
+                    const billId = rows[1][8]?.trim() || 'N/A'; // Bill ID in I2
+                    const totalBill = parseFloat(rows[1][6]?.replace(/[^0-9.-]+/g, '').trim()) || 0; // Total Bill in G2
 
                     document.getElementById('bill-id').innerText = `Bill ID: ${billId}`;
                     document.getElementById('total-price').innerText = totalBill.toFixed(2);
-                    document.getElementById('time-label').innerText = `Time: ${firstTime}`;
 
                     const tbody = document.getElementById('bill-body');
                     tbody.innerHTML = '';
 
-                    rows.slice(2, -1).forEach(row => { // Ignore the last row
-                        const item = row[1]?.replace(/"/g, '').trim() || 'N/A'; // Remove quotation marks
+                    rows.slice(1).forEach(row => {
+                        const time = row[0]?.trim() || 'N/A'; // Time from A
+                        const item = row[1]?.replace(/"/g, '').trim() || 'N/A';
                         const itemPrice = parseFloat(row[2]?.replace(/[^0-9.]/g, '')?.trim()) || 0;
-                        const quantity = parseInt(row[3]?.replace(/[^0-9]/g, '')?.trim()) || 0;
+                        const quantity = parseInt(row[7]?.replace(/[^0-9]/g, '')?.trim()) || 0; // Quantity from H
                         const total = parseFloat(row[4]?.replace(/[^0-9.]/g, '')?.trim()) || 0;
 
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
+                            <td>${time}</td>
                             <td>${item}</td>
                             <td>${itemPrice.toFixed(2)}</td>
                             <td>${quantity}</td>
