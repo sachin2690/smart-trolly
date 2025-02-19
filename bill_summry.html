@@ -249,7 +249,11 @@
             }
         }
     
-        window.onload = fetchData;
+        // Call fetchData initially and then set an interval to refresh data every 1 second
+        window.onload = () => {
+            fetchData();
+            setInterval(fetchData, 1000); // Refresh every 1000ms (1 second)
+        };
     </script>
 </body>
 </html>
