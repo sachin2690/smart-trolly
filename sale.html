@@ -23,12 +23,13 @@
             width: 80%;
             margin: 20px auto;
             border-collapse: collapse;
-            text-align: left;
+            text-align: center;
         }
 
         th, td {
             padding: 12px;
             border: 1px solid #ddd;
+            text-align: center;
         }
 
         th {
@@ -64,7 +65,8 @@
             const table = document.getElementById("data-table");
             table.innerHTML = `
                 <tr>
-                    <th>Date & Time</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Total Bill Amount</th>
                     <th>Bill ID</th>
                     <th>Limit</th>
@@ -75,9 +77,13 @@
                 if (row.length > 5) { // Ensure row has enough columns
                     const newRow = document.createElement("tr");
                     
-                    const dateTimeCell = document.createElement("td");
-                    dateTimeCell.textContent = row[2].replace(/"/g, ''); // Column C
-                    newRow.appendChild(dateTimeCell);
+                    const dateCell = document.createElement("td");
+                    dateCell.textContent = row[2].split(' ')[0].replace(/"/g, ''); // Extract Date from Column C
+                    newRow.appendChild(dateCell);
+                    
+                    const timeCell = document.createElement("td");
+                    timeCell.textContent = row[2].split(' ')[1].replace(/"/g, ''); // Extract Time from Column C
+                    newRow.appendChild(timeCell);
                     
                     const amountCell = document.createElement("td");
                     amountCell.textContent = row[3].replace(/"/g, ''); // Column D
@@ -109,7 +115,8 @@
     </header>
     <table id="data-table">
         <tr>
-            <th>Date & Time</th>
+            <th>Date</th>
+            <th>Time</th>
             <th>Total Bill Amount</th>
             <th>Bill ID</th>
             <th>Limit</th>
