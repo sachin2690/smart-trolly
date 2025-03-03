@@ -6,6 +6,8 @@
     <title>Smart Trolley System - Sales Report</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> -->
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -103,18 +105,35 @@
         }
         
         function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text("Smart Trolley System - Sales Report", 20, 10);
-            let rows = [];
-            document.querySelectorAll("#data-table tr").forEach(tr => {
-                let row = [];
-                tr.querySelectorAll("td, th").forEach(td => row.push(td.innerText));
-                rows.push(row);
-            });
-            doc.autoTable({ head: [rows[0]], body: rows.slice(1) });
-            doc.save("Sales_Report.pdf");
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.text("Smart Trolley System - Sales Report", 20, 10);
+
+    let table = document.getElementById("data-table");
+    let rows = [];
+    
+    for (let i = 0; i < table.rows.length; i++) {
+        let row = [];
+        for (let j = 0; j < table.rows[i].cells.length; j++) {
+            row.push(table.rows[i].cells[j].innerText);
         }
+        rows.push(row);
+    }
+    
+    if (rows.length > 1) {
+        doc.autoTable({
+            head: [rows[0]], 
+            body: rows.slice(1),
+            startY: 20
+        });
+    } else {
+        doc.text("No data available.", 20, 20);
+    }
+
+    doc.save("Sales_Report.pdf");
+}
+
         
         setInterval(fetchData, 5000);
         window.onload = fetchData;
