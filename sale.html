@@ -4,66 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Trolley System - Sales Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
+            text-align: center;
         }
-
         header {
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
-            text-align: center;
         }
-
         nav {
             background-color: #333;
             padding: 10px;
-            text-align: center;
         }
-
         nav a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
             font-size: 18px;
         }
-
         table {
             width: 80%;
             margin: 20px auto;
             border-collapse: collapse;
             text-align: center;
         }
-
         th, td {
             padding: 12px;
             border: 1px solid #ddd;
-            text-align: center;
         }
-
         th {
             background-color: #4CAF50;
             color: white;
         }
-
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
         tr:hover {
             background-color: #f1f1f1;
+        }
+        button {
+            margin: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
     </style>
     <script>
         async function fetchData() {
-            const sheetId = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; // Replace with your Google Sheet ID
-            const sheetName = 'Sheet2'; // Fetching data from Sheet2
+            const sheetId = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY';
+            const sheetName = 'Sheet2';
             const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
-
+            
             try {
                 const response = await fetch(url);
                 const csvData = await response.text();
@@ -73,7 +73,7 @@
                 console.error("Error fetching data:", error);
             }
         }
-
+        
         function updateTable(rows) {
             const table = document.getElementById("data-table");
             table.innerHTML = `
@@ -85,40 +85,37 @@
                     <th>Limit</th>
                 </tr>
             `;
-
+            
             rows.slice(1).forEach(row => {
-                if (row.length > 5) { // Ensure row has enough columns
+                if (row.length > 5) {
                     const newRow = document.createElement("tr");
-                    
-                    const dateCell = document.createElement("td");
-                    dateCell.textContent = row[2].split(' ')[0].replace(/"/g, ''); // Extract Date from Column C
-                    newRow.appendChild(dateCell);
-                    
-                    const timeCell = document.createElement("td");
-                    timeCell.textContent = row[2].split(' ')[1].replace(/"/g, ''); // Extract Time from Column C
-                    newRow.appendChild(timeCell);
-                    
-                    const amountCell = document.createElement("td");
-                    amountCell.textContent = row[3].replace(/"/g, ''); // Column D
-                    newRow.appendChild(amountCell);
-                    
-                    const billIdCell = document.createElement("td");
-                    billIdCell.textContent = row[4].replace(/"/g, ''); // Column E
-                    newRow.appendChild(billIdCell);
-                    
-                    const limitCell = document.createElement("td");
-                    limitCell.textContent = row[5].replace(/"/g, ''); // Column F
-                    newRow.appendChild(limitCell);
-                    
+                    newRow.innerHTML = `
+                        <td>${row[2].split(' ')[0].replace(/"/g, '')}</td>
+                        <td>${row[2].split(' ')[1].replace(/"/g, '')}</td>
+                        <td>${row[3].replace(/"/g, '')}</td>
+                        <td>${row[4].replace(/"/g, '')}</td>
+                        <td>${row[5].replace(/"/g, '')}</td>
+                    `;
                     table.appendChild(newRow);
                 }
             });
         }
-
-        // Refresh the data every 5 seconds
+        
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Smart Trolley System - Sales Report", 20, 10);
+            let rows = [];
+            document.querySelectorAll("#data-table tr").forEach(tr => {
+                let row = [];
+                tr.querySelectorAll("td, th").forEach(td => row.push(td.innerText));
+                rows.push(row);
+            });
+            doc.autoTable({ head: [rows[0]], body: rows.slice(1) });
+            doc.save("Sales_Report.pdf");
+        }
+        
         setInterval(fetchData, 5000);
-
-        // Fetch data on page load
         window.onload = fetchData;
     </script>
 </head>
@@ -129,6 +126,7 @@
     <nav>
         <a href="dashbord.html">Dashboard</a>
     </nav>
+    <button onclick="generatePDF()">Download PDF</button>
     <table id="data-table">
         <tr>
             <th>Date</th>
