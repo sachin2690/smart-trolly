@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="yZKAAbV80rOENX9aF3geQoHMdXSSzN5yGUbmKO_5FS4" />
     <title>Smart Trolley System Dashboard</title>
     <style>
         body {
@@ -18,7 +19,7 @@
             text-align: center;
         }
         .container {
-            max-width: 1000px;
+            max-width: 600px;
             margin: 20px auto;
             background: white;
             padding: 20px;
@@ -62,7 +63,7 @@
 <body>
     <header>
         <a href="dashbord.html" style="color: white; text-decoration: none; font-size: 18px;">Dashboard</a>
-        <a href="actitive.html" style="color: white; text-decoration: none; font-size: 18px; margin-left: 20px;">Customer-wise Trolley Usage</a>
+        <a href="actitive.html" style="color: white; text-decoration: none; font-size: 18px;">Customer wise Troally uses </a>
     </header>
 
     <div class="container">
@@ -72,69 +73,50 @@
         <table id="trolleyTable" style="display: none;">
             <thead>
                 <tr>
-                    <th>Timestamp</th>
-                    <th>Name</th>
-                    <th>Contact Number</th>
-                    <th>Trolley Number</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Status</th>
-                    <th>Column 1</th>
-                    <th>Column 2</th>
-                    <th>Column 3</th>
-                    <th>Column 9</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
+            <tbody>
+                <tr>
+                    <td id="dateCell"></td>
+                    <td id="timeCell"></td>
+                    <td id="statusCell"></td>
+                </tr>
+                <tr>
+                    <td id="dateCell"></td>
+                    <td id="timeCell"></td>
+                    <td id="statusCell"></td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <script>
         async function fetchTrolleyData() {
-            const sheetID = '1iVoyraxTk_EsRWL838hrciZHTDkoRedRt_Xbtx6y0FE'; // Google Sheet ID
-            const sheetName = 'Sheet1'; // The name of the sheet
+            const sheetID = '1iVoyraxTk_EsRWL838hrciZHTDkoRedRt_Xbtx6y0FE'; 
+            const sheetName = 'Sheet1'; 
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.text();
-                const rows = data.split('\n').map(row => row.split(','));
+                const rows = data.split('\n');
+                
+                const date = rows[0]?.split(',')[0]?.trim().replace(/"/g, '') || 'N/A'; 
+                const time = rows[0]?.split(',')[1]?.trim().replace(/"/g, '') || 'N/A'; 
+                const status = rows[0]?.split(',')[3]?.trim().replace(/"/g, '') || 'N/A'; 
 
-                const tableBody = document.getElementById('tableBody');
-                tableBody.innerHTML = ''; // Clear previous data
+                document.getElementById('dateCell').textContent = date;
+                document.getElementById('timeCell').textContent = time;
 
-                rows.slice(1).forEach(row => {
-                    if (row.length > 8) {
-                        const newRow = document.createElement('tr');
-
-                        // Extracting required columns
-                        const timestamp = row[0]?.replace(/"/g, '') || 'N/A';
-                        const name = row[1]?.replace(/"/g, '') || 'N/A';
-                        const contact = row[2]?.replace(/"/g, '') || 'N/A';
-                        const trolleyNum = row[3]?.replace(/"/g, '') || 'N/A';
-                        const status = row[4]?.replace(/"/g, '') || 'N/A';
-                        const column1 = row[5]?.replace(/"/g, '') || 'N/A';
-                        const column2 = row[6]?.replace(/"/g, '') || 'N/A';
-                        const column3 = row[7]?.replace(/"/g, '') || 'N/A';
-                        const column9 = row[8]?.replace(/"/g, '') || 'N/A';
-
-                        newRow.innerHTML = `
-                            <td>${timestamp}</td>
-                            <td>${name}</td>
-                            <td>${contact}</td>
-                            <td>${trolleyNum}</td>
-                            <td class="${status === 'Active' ? 'status-active' : 'status-inactive'}">${status}</td>
-                            <td>${column1}</td>
-                            <td>${column2}</td>
-                            <td>${column3}</td>
-                            <td>${column9}</td>
-                        `;
-                        tableBody.appendChild(newRow);
-                    }
-                });
+                const statusCell = document.getElementById('statusCell');
+                statusCell.textContent = status;
+                statusCell.className = status === 'Active' ? 'status-active' : 'status-inactive';
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('trolleyTable').style.display = 'table';
-
             } catch (error) {
                 console.error('Error fetching trolley data:', error);
                 document.getElementById('loading').textContent = 'Failed to fetch data. Please try again later.';
@@ -143,7 +125,7 @@
 
         window.onload = () => {
             fetchTrolleyData(); // Fetch data immediately on load
-            setInterval(fetchTrolleyData, 5000); // Refresh data every 5 seconds
+            setInterval(fetchTrolleyData, 100); // Refresh data every 1 second
         };
     </script>
 </body>

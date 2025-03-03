@@ -18,7 +18,7 @@
             text-align: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
             background: white;
             padding: 20px;
@@ -77,6 +77,10 @@
                     <th>Contact Number</th>
                     <th>Trolley Number</th>
                     <th>Status</th>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                    <th>Column 9</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -93,13 +97,13 @@
             try {
                 const response = await fetch(url);
                 const data = await response.text();
-                const rows = data.split('\n').map(row => row.split(','));
+                const rows = data.split('\n').map(row => row.split(',')); // Convert CSV to an array
 
                 const tableBody = document.getElementById('tableBody');
                 tableBody.innerHTML = ''; // Clear previous data
 
                 rows.slice(1).forEach(row => {
-                    if (row.length > 5) {
+                    if (row.length > 8) { // Ensure row has enough columns
                         const newRow = document.createElement('tr');
 
                         // Extracting required columns
@@ -108,6 +112,10 @@
                         const contact = row[2]?.replace(/"/g, '') || 'N/A';
                         const trolleyNum = row[3]?.replace(/"/g, '') || 'N/A';
                         const status = row[4]?.replace(/"/g, '') || 'N/A';
+                        const column1 = row[5]?.replace(/"/g, '') || 'N/A';
+                        const column2 = row[6]?.replace(/"/g, '') || 'N/A';
+                        const column3 = row[7]?.replace(/"/g, '') || 'N/A';
+                        const column9 = row[8]?.replace(/"/g, '') || 'N/A';
 
                         newRow.innerHTML = `
                             <td>${timestamp[0]}</td>
@@ -116,6 +124,10 @@
                             <td>${contact}</td>
                             <td>${trolleyNum}</td>
                             <td class="${status === 'Active' ? 'status-active' : 'status-inactive'}">${status}</td>
+                            <td>${column1}</td>
+                            <td>${column2}</td>
+                            <td>${column3}</td>
+                            <td>${column9}</td>
                         `;
                         tableBody.appendChild(newRow);
                     }
