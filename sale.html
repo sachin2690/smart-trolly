@@ -108,11 +108,15 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    doc.text("Smart Trolley System - Sales Report", 20, 10);
+    // Set title and center it
+    const title = "Smart Trolley System - Sales Report";
+    const pageWidth = doc.internal.pageSize.width;
+    const titleWidth = doc.getTextWidth(title);
+    doc.text(title, (pageWidth - titleWidth) / 2, 15);
 
     let table = document.getElementById("data-table");
     let rows = [];
-    
+
     for (let i = 0; i < table.rows.length; i++) {
         let row = [];
         for (let j = 0; j < table.rows[i].cells.length; j++) {
@@ -120,19 +124,23 @@
         }
         rows.push(row);
     }
-    
+
     if (rows.length > 1) {
         doc.autoTable({
             head: [rows[0]], 
             body: rows.slice(1),
-            startY: 20
+            startY: 25, // Space below title
+            theme: 'striped',
+            styles: { fontSize: 10 },
+            headStyles: { fillColor: [76, 175, 80] } // Green header
         });
     } else {
-        doc.text("No data available.", 20, 20);
+        doc.text("No data available.", (pageWidth - doc.getTextWidth("No data available.")) / 2, 25);
     }
 
     doc.save("Sales_Report.pdf");
 }
+
 
         
         setInterval(fetchData, 5000);
