@@ -117,13 +117,13 @@
                         const contactNumber = row[2]?.replace(/"/g, '') || 'N/A';
                         const selectedCart = row[3]?.replace(/"/g, '') || 'N/A';
                         const time = row[4]?.replace(/"/g, '') || 'N/A';
-                        const status = row[5]?.replace(/"/g, '') || 'N/A';
+                        const status = row[5]?.replace(/"/g, '').toLowerCase() || 'N/A';
                         const date = row[6]?.replace(/"/g, '') || 'N/A';
                         const time2 = row[7]?.replace(/"/g, '') || 'N/A';
 
                         let statusClass = 'status-blank';
-                        if (status === 'Active') statusClass = 'status-active';
-                        else if (status === 'Inactive') statusClass = 'status-inactive';
+                        if (status === 'active') statusClass = 'status-active';
+                        else if (status === 'inactive') statusClass = 'status-inactive';
 
                         newRow.innerHTML = `
                             <td>${timeStamp}</td>
