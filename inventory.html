@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Tracking Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #1a73e8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        table th {
+            background-color: #1a73e8;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            color: #888;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Item Tracking Dashboard</h1>
+    </header>
+    <div class="container">
+        <h2>Inventory Status</h2>
+        <div id="loading" class="loading">Fetching data...</div>
+        <table id="itemTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Total Qty</th>
+                    <th>Sold Quantity</th>
+                    <th>Remaining Item</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function fetchItemData() {
+            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; // Replace with your Google Sheet ID
+            const sheetName = 'Sheet5'; // Replace with your Sheet Name
+            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.text();
+                const rows = data.split('\n').map(row => row.split(','));
+
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = '';
+
+                rows.slice(1).forEach(row => {
+                    if (row.length >= 4) {
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${row[0]?.replace(/"/g, '') || 'N/A'}</td>
+                            <td>${row[1]?.replace(/"/g, '') || 'N/A'}</td>
+                            <td>${row[2]?.replace(/"/g, '') || 'N/A'}</td>
+                            <td>${row[3]?.replace(/"/g, '') || 'N/A'}</td>
+                        `;
+                        tableBody.appendChild(newRow);
+                    }
+                });
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('itemTable').style.display = 'table';
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('loading').textContent = 'Failed to fetch data. Please try again later.';
+            }
+        }
+
+        window.onload = fetchItemData;
+    </script>
+</body>
+</html>
