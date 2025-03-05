@@ -44,11 +44,18 @@
             color: white;
         }
         .status-active {
-            color: green;
+            background-color: green;
+            color: white;
             font-weight: bold;
         }
         .status-inactive {
-            color: red;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+        .status-blank {
+            background-color: yellow;
+            color: black;
             font-weight: bold;
         }
         .loading {
@@ -114,13 +121,17 @@
                         const date = row[6]?.replace(/"/g, '') || 'N/A';
                         const time2 = row[7]?.replace(/"/g, '') || 'N/A';
 
+                        let statusClass = 'status-blank';
+                        if (status === 'Active') statusClass = 'status-active';
+                        else if (status === 'Inactive') statusClass = 'status-inactive';
+
                         newRow.innerHTML = `
                             <td>${timeStamp}</td>
                             <td>${fullName}</td>
                             <td>${contactNumber}</td>
                             <td>${selectedCart}</td>
                             <td>${time}</td>
-                            <td class="${status === 'Active' ? 'status-active' : 'status-inactive'}">${status}</td>
+                            <td class="${statusClass}">${status}</td>
                             <td>${date}</td>
                             <td>${time2}</td>
                         `;
