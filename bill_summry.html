@@ -109,11 +109,35 @@
             background-color: #45a049;
         }
 
+        /* Styled Dashboard Link */
+        .center-link {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .center-link a {
+            text-decoration: none;
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .center-link a:hover {
+            background-color: #1558b0;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <center><a href="dashbord.html">Dashboard</a></center>
+        <div class="center-link">
+            <a href="dashbord.html">Dashboard</a>
+        </div>
         <div id="time-label" class="time-label"></div>
         <h1>Bill Summary</h1>
         <div id="bill-id"></div>
@@ -212,17 +236,6 @@
             doc.setFontSize(12);
             doc.text(`Bill ID: ${window.billData.billId}`, 10, 25);
             doc.text(`Time: ${window.billData.time}`, pageWidth - 10, 25, { align: "right" });
-
-            doc.autoTable({
-                head: [['Item', 'Item Price', 'Quantity', 'Total']],
-                body: [...window.billData.tableData, [{ content: "Total", styles: { fontStyle: 'bold' } }, "", 
-                    { content: window.billData.totalQuantity.toString(), styles: { fontStyle: 'bold' } }, 
-                    { content: window.billData.totalBill.toFixed(2), styles: { fontStyle: 'bold' } }]],
-                startY: 35,
-                theme: 'striped',
-                styles: { fontSize: 10, cellPadding: 3 },
-                headStyles: { fillColor: [75, 175, 80], textColor: 255 },
-            });
 
             doc.save("Bill_Summary.pdf");
         }
