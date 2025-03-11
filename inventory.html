@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Tracking Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +18,18 @@
             color: white;
             padding: 10px 20px;
             text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background: #004aad;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
         }
         .container {
             max-width: 800px;
@@ -53,12 +66,30 @@
         .chart-container {
             margin-top: 30px;
         }
+        .btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #004aad;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Item Tracking Dashboard</h1>
     </header>
+    
+    <nav class="navbar">
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+
     <div class="container">
         <h2>Inventory Status</h2>
         <div id="loading" class="loading">Fetching data...</div>
@@ -74,17 +105,19 @@
             <tbody id="tableBody"></tbody>
         </table>
         
+        <button class="btn" onclick="downloadPDF()">Download PDF</button>
+
         <div class="chart-container">
             <canvas id="inventoryChart"></canvas>
         </div>
     </div>
 
     <script>
-        let chartInstance = null; // To store the chart instance
+        let chartInstance = null;
 
         async function fetchItemData() {
-            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; // Replace with your Google Sheet ID
-            const sheetName = 'Sheet5'; // Replace with your Sheet Name
+            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; 
+            const sheetName = 'Sheet5';
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
 
             try {
@@ -116,7 +149,6 @@
                         `;
                         tableBody.appendChild(newRow);
 
-                        // Store data for chart
                         items.push(itemName);
                         totalQty.push(total);
                         soldQty.push(sold);
@@ -127,7 +159,6 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('itemTable').style.display = 'table';
 
-                // Update or create chart
                 updateChart(items, totalQty, soldQty, remainingQty);
 
             } catch (error) {
@@ -140,7 +171,7 @@
             const ctx = document.getElementById('inventoryChart').getContext('2d');
 
             if (chartInstance) {
-                chartInstance.destroy(); // Destroy previous chart before creating a new one
+                chartInstance.destroy();
             }
 
             chartInstance = new Chart(ctx, {
@@ -181,6 +212,25 @@
                     }
                 }
             });
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text('Inventory Report', 80, 10);
+
+            let y = 20;
+            doc.setFontSize(12);
+            document.querySelectorAll('#itemTable tbody tr').forEach(row => {
+                let rowData = [];
+                row.querySelectorAll('td').forEach(cell => rowData.push(cell.innerText));
+                doc.text(rowData.join(' | '), 10, y);
+                y += 10;
+            });
+
+            doc.save('Inventory_Report.pdf');
         }
 
         window.onload = fetchItemData;
