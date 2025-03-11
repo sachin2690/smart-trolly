@@ -21,35 +21,44 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            text-align: center;
         }
         .logo-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
         }
         .logo-container img {
             height: 50px;
-            margin-right: 10px;
+            margin-bottom: 5px;
         }
         .logo-container h1 {
             font-size: 24px;
             margin: 0;
         }
         .nav-links {
-            display: flex;
             list-style: none;
             padding: 0;
+            margin: 10px 0 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         .nav-links li {
-            margin-left: 20px;
+            margin: 5px 15px;
         }
         .nav-links a {
             color: white;
             text-decoration: none;
             font-size: 16px;
             padding: 10px;
+            display: block;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            border-radius: 5px;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
         }
         .menu-toggle {
             display: none;
@@ -59,17 +68,13 @@
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
+                text-align: center;
+                margin-top: 10px;
             }
             .nav-links {
                 display: none;
                 flex-direction: column;
-                position: absolute;
-                top: 60px;
-                right: 0;
-                background: #1a73e8;
-                width: 100%;
-                text-align: center;
-                padding: 10px 0;
+                align-items: center;
             }
             .nav-links.active {
                 display: flex;
@@ -98,12 +103,23 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .blog-post:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .blog-post img {
             width: 100%;
             height: 250px;
             object-fit: cover;
             border-radius: 8px;
+            display: block;
+            transition: transform 0.3s ease-in-out;
+        }
+        .blog-post:hover img {
+            transform: scale(1.1);
         }
         .blog-post h3 {
             color: #1a73e8;
@@ -131,13 +147,12 @@
         </div>
         <div class="menu-toggle" onclick="toggleMenu()">☰</div>
         <ul class="nav-links">
-            <li><a href="sale.html">Sales</a></li>
-            <li><a href="home.html">Trolly Status</a></li>
+            <li><a href="sale.html">Sale</a></li>
+            <li><a href="home.html">Track Trolley</a></li>
             <li><a href="inventory.html">Inventory</a></li>
-            <li><a href="bill_summry.html">Recent Bill Summary</a></li>
             <li><a href="tel:770085614">Contact</a></li>
             <li><a href="#">About</a></li>
-            
+            <li><a href="bill_summry.html">Recent Bill Summary</a></li>
         </ul>
     </header>
 
