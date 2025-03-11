@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Tracking Dashboard</title>
+    <title>Cartify - Inventory Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
         }
         header {
             background-color: #1a73e8;
             color: white;
-            padding: 10px 20px;
+            padding: 15px;
             text-align: center;
+            font-size: 24px;
         }
         .navbar {
             display: flex;
@@ -32,7 +34,7 @@
             font-size: 16px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
             background: white;
             padding: 20px;
@@ -40,7 +42,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        h1 {
+        h2 {
             color: #1a73e8;
         }
         table {
@@ -57,15 +59,6 @@
             background-color: #1a73e8;
             color: white;
         }
-        .loading {
-            text-align: center;
-            color: #888;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-        .chart-container {
-            margin-top: 30px;
-        }
         .btn {
             background-color: #1a73e8;
             color: white;
@@ -79,20 +72,32 @@
         .btn:hover {
             background-color: #004aad;
         }
+
+        /* Updated Chart Size */
+        .chart-container {
+            width: 100%;
+            height: 500px; /* Increased height */
+            max-width: 1000px; /* Adjusted width */
+            margin: auto;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Item Tracking Dashboard</h1>
+        Cartify - Inventory Management System
     </header>
-    
+
     <nav class="navbar">
         <a href="dashbord.html">Dashboard</a>
     </nav>
 
     <div class="container">
         <h2>Inventory Status</h2>
-        <div id="loading" class="loading">Fetching data...</div>
+        <div id="loading">Fetching data...</div>
         <table id="itemTable" style="display: none;">
             <thead>
                 <tr>
@@ -116,7 +121,7 @@
         let chartInstance = null;
 
         async function fetchItemData() {
-            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY'; 
+            const sheetID = '1AmRhO10JtiocmQp38Mgf9NhJUSLASeHo8H4-C_o8oUY';
             const sheetName = 'Sheet5';
             const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
 
@@ -168,50 +173,53 @@
         }
 
         function updateChart(items, totalQty, soldQty, remainingQty) {
-            const ctx = document.getElementById('inventoryChart').getContext('2d');
-
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: items,
-                    datasets: [
-                        {
-                            label: 'Total Quantity',
-                            data: totalQty,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Sold Quantity',
-                            data: soldQty,
-                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Remaining Quantity',
-                            data: remainingQty,
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            if (!chartInstance) {
+                const ctx = document.getElementById('inventoryChart').getContext('2d');
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: items,
+                        datasets: [
+                            {
+                                label: 'Total Quantity',
+                                data: totalQty,
+                                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Sold Quantity',
+                                data: soldQty,
+                                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Remaining Quantity',
+                                data: remainingQty,
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Allows it to resize dynamically
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                chartInstance.data.labels = items;
+                chartInstance.data.datasets[0].data = totalQty;
+                chartInstance.data.datasets[1].data = soldQty;
+                chartInstance.data.datasets[2].data = remainingQty;
+                chartInstance.update();
+            }
         }
 
         function downloadPDF() {
@@ -219,20 +227,24 @@
             const doc = new jsPDF();
 
             doc.setFontSize(18);
-            doc.text('Inventory Report', 80, 10);
+            doc.text('Cartify Inventory Report', 65, 10);
 
-            let y = 20;
-            doc.setFontSize(12);
-            document.querySelectorAll('#itemTable tbody tr').forEach(row => {
-                let rowData = [];
-                row.querySelectorAll('td').forEach(cell => rowData.push(cell.innerText));
-                doc.text(rowData.join(' | '), 10, y);
-                y += 10;
+            const table = document.getElementById("itemTable");
+            const headers = [...table.querySelectorAll("thead tr th")].map(th => th.innerText);
+            const rows = [...table.querySelectorAll("tbody tr")].map(tr =>
+                [...tr.querySelectorAll("td")].map(td => td.innerText)
+            );
+
+            doc.autoTable({
+                head: [headers],
+                body: rows,
+                startY: 20
             });
 
-            doc.save('Inventory_Report.pdf');
+            doc.save('Cartify_Inventory_Report.pdf');
         }
 
+        setInterval(fetchItemData, 1000);
         window.onload = fetchItemData;
     </script>
 </body>
