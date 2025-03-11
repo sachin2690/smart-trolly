@@ -108,35 +108,10 @@
         .buttons a:hover, .buttons button:hover {
             background-color: #45a049;
         }
-
-        .center-link {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .center-link a {
-            text-decoration: none;
-            background-color: #1a73e8;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .center-link a:hover {
-            background-color: #1558b0;
-        }
-
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="center-link">
-            <a href="dashbord.html">Dashboard</a>
-        </div>
         <div id="time-label" class="time-label"></div>
         <h1>Bill Summary</h1>
         <div id="bill-id"></div>
@@ -203,20 +178,12 @@
 
                         totalQuantity += quantity;
 
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${item}</td>
-                                <td>${itemPrice.toFixed(2)}</td>
-                                <td>${quantity}</td>
-                                <td>${total.toFixed(2)}</td>
-                            </tr>
-                        `;
+                        tbody.innerHTML += `<tr><td>${item}</td><td>${itemPrice.toFixed(2)}</td><td>${quantity}</td><td>${total.toFixed(2)}</td></tr>`;
 
                         tableData.push([item, itemPrice.toFixed(2), quantity, total.toFixed(2)]);
                     });
 
                     document.getElementById('total-quantity-value').innerHTML = `<b>${totalQuantity}</b>`;
-
                     window.billData = { billId, time: firstTime, tableData, totalBill, totalQuantity };
                 }
             } catch (error) {
@@ -224,17 +191,34 @@
             }
         }
 
-        window.onload = () => {
-            fetchData();
-            setInterval(fetchData, 1000);
-        };
-
         function generatePDF() {
             const doc = new jsPDF();
-            doc.text("Bill Summary", 105, 15, { align: "center" });
-            doc.autoTable({ head: [['Item', 'Item Price', 'Quantity', 'Total']], body: window.billData.tableData });
+            doc.setFont("helvetica", "bold");
+
+            doc.setFontSize(18);
+            doc.text("Bill Summary", doc.internal.pageSize.getWidth() / 2, 15, { align: "center" });
+
+            doc.setFontSize(12);
+            doc.text(`Bill ID: ${window.billData.billId}`, 10, 25);
+            doc.text(`Time: ${window.billData.time}`, doc.internal.pageSize.getWidth() - 10, 25, { align: "right" });
+
+            doc.autoTable({
+                startY: 30,
+                head: [["Item", "Item Price", "Quantity", "Total"]],
+                body: window.billData.tableData,
+                theme: "grid",
+                styles: { fontSize: 10 },
+            });
+
             doc.save("Bill_Summary.pdf");
         }
+
+        function autoRefresh() {
+            fetchData();
+            setTimeout(autoRefresh, 1000);
+        }
+
+        window.onload = autoRefresh;
     </script>
 </body>
 </html>
