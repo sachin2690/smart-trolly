@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="yZKAAbV80rOENX9aF3geQoHMdXSSzN5yGUbmKO_5FS4" />
-    <title>Sachin System Dashboard</title>
+    <title>Cartify - Smart Trolley System</title>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,28 +20,63 @@
             padding: 10px 20px;
             position: sticky;
             top: 0;
-            z-index: 10;
-        }
-        .navbar {
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .navbar img {
-            height: 50px;
-            margin-right: 20px;
-        }
-        .navbar .navbar-links {
+        .logo-container {
             display: flex;
-            justify-content: center;
-            flex: 1;
+            align-items: center;
         }
-        .navbar a {
+        .logo-container img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .logo-container h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        .nav-links li {
+            margin-left: 20px;
+        }
+        .nav-links a {
             color: white;
             text-decoration: none;
-            padding: 10px;
             font-size: 16px;
-            margin-left: 20px;
+            padding: 10px;
+        }
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 28px;
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                background: #1a73e8;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
         }
         .container {
             max-width: 1200px;
@@ -49,11 +85,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #1a73e8;
         }
         .blog-posts {
             display: grid;
@@ -72,57 +104,45 @@
             height: 250px;
             object-fit: cover;
             border-radius: 8px;
-            display: block;
         }
         .blog-post h3 {
             color: #1a73e8;
             margin: 15px 0;
             font-size: 22px;
         }
-        .blog-post p {
-            color: #555;
-            font-size: 16px;
-        }
-        @media (max-width: 768px) {
-            .navbar a {
-                font-size: 14px;
-                padding: 8px;
-            }
-            .navbar img {
-                height: 40px;
-            }
-        }
         @media (max-width: 480px) {
-            .navbar a {
-                font-size: 12px;
-                padding: 6px;
-            }
-            .navbar img {
-                height: 30px;
-            }
             .blog-posts {
                 grid-template-columns: 1fr;
             }
         }
     </style>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector(".nav-links").classList.toggle("active");
+        }
+    </script>
 </head>
 <body>
     <header>
-        <div class="navbar">
+        <div class="logo-container">
             <img src="company.png" alt="Company Logo">
-            <div class="navbar-links">
-                <a href="sale.html">Sale</a>
-                <a href="home.html">Track Trolley</a>
-                <a href="inventory.html">Inventory</a> <!-- Added Inventory Link -->
-                <a href="tel:770085614">Contact</a>
-                <a href="#">About</a>
-                <a href="index.html">Click Here to Pay</a>
-                <a href="bill_summry.html">Recent Bill Summary</a>
-            </div>
+            <h1>Cartify</h1>
         </div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="sale.html">Sales</a></li>
+            <li><a href="home.html">Trolly Status</a></li>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="bill_summry.html">Recent Bill Summary</a></li>
+            <li><a href="tel:770085614">Contact</a></li>
+            <li><a href="#">About</a></li>
+            
+        </ul>
     </header>
+
     <div class="container">
-        <h1>Smart Trolley System</h1>
+        <h2>Welcome to Cartify - Smart Trolley System</h2>
         <div class="blog-posts">
             <div class="blog-post">
                 <img src="1.2.jpg" alt="Post 1">
