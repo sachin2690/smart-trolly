@@ -109,7 +109,6 @@
             background-color: #45a049;
         }
 
-        /* Styled Dashboard Link */
         .center-link {
             display: flex;
             justify-content: center;
@@ -225,22 +224,17 @@
             }
         }
 
+        window.onload = () => {
+            fetchData();
+            setInterval(fetchData, 1000);
+        };
+
         function generatePDF() {
             const doc = new jsPDF();
-            const pageWidth = doc.internal.pageSize.getWidth();
-
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(18);
-            doc.text("Bill Summary", pageWidth / 2, 15, { align: "center" });
-
-            doc.setFontSize(12);
-            doc.text(`Bill ID: ${window.billData.billId}`, 10, 25);
-            doc.text(`Time: ${window.billData.time}`, pageWidth - 10, 25, { align: "right" });
-
+            doc.text("Bill Summary", 105, 15, { align: "center" });
+            doc.autoTable({ head: [['Item', 'Item Price', 'Quantity', 'Total']], body: window.billData.tableData });
             doc.save("Bill_Summary.pdf");
         }
-
-        window.onload = fetchData;
     </script>
 </body>
 </html>
