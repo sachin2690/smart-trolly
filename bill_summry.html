@@ -108,10 +108,35 @@
         .buttons a:hover, .buttons button:hover {
             background-color: #45a049;
         }
+
+        /* Dashboard Button */
+        .center-link {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .center-link a {
+            text-decoration: none;
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .center-link a:hover {
+            background-color: #1558b0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="center-link">
+            <a href="dashboard.html">Dashboard</a>
+        </div>
         <div id="time-label" class="time-label"></div>
         <h1>Bill Summary</h1>
         <div id="bill-id"></div>
@@ -193,8 +218,6 @@
 
         function generatePDF() {
             const doc = new jsPDF();
-            doc.setFont("helvetica", "bold");
-
             doc.setFontSize(18);
             doc.text("Bill Summary", doc.internal.pageSize.getWidth() / 2, 15, { align: "center" });
 
@@ -202,13 +225,7 @@
             doc.text(`Bill ID: ${window.billData.billId}`, 10, 25);
             doc.text(`Time: ${window.billData.time}`, doc.internal.pageSize.getWidth() - 10, 25, { align: "right" });
 
-            doc.autoTable({
-                startY: 30,
-                head: [["Item", "Item Price", "Quantity", "Total"]],
-                body: window.billData.tableData,
-                theme: "grid",
-                styles: { fontSize: 10 },
-            });
+            doc.autoTable({ startY: 30, head: [["Item", "Item Price", "Quantity", "Total"]], body: window.billData.tableData, theme: "grid" });
 
             doc.save("Bill_Summary.pdf");
         }
