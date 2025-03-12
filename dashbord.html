@@ -43,6 +43,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            align-items: center;
         }
         .nav-links li {
             margin: 5px 15px;
@@ -60,11 +61,28 @@
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.1);
         }
+
+        /* Register Button Styles */
+        .register-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+        }
+        .register-btn:hover {
+            background-color: #218838;
+            transform: scale(1.1);
+        }
+
         .menu-toggle {
             display: none;
             cursor: pointer;
             font-size: 28px;
         }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -83,6 +101,7 @@
                 margin: 10px 0;
             }
         }
+
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -92,12 +111,14 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
         .blog-posts {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-top: 40px;
         }
+
         .blog-post {
             background: #fff;
             padding: 20px;
@@ -106,10 +127,12 @@
             overflow: hidden;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
+
         .blog-post:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+
         .blog-post img {
             width: 100%;
             height: 250px;
@@ -118,14 +141,17 @@
             display: block;
             transition: transform 0.3s ease-in-out;
         }
+
         .blog-post:hover img {
             transform: scale(1.1);
         }
+
         .blog-post h3 {
             color: #1a73e8;
             margin: 15px 0;
             font-size: 22px;
         }
+
         @media (max-width: 480px) {
             .blog-posts {
                 grid-template-columns: 1fr;
@@ -153,7 +179,7 @@
             <li><a href="bill_summry.html">Recent Bill Summary</a></li>
             <li><a href="tel:770085614">Contact</a></li>
             <li><a href="about.html">About</a></li>
-            
+            <li><a href="https://sachin2690.github.io/form/" class="register-btn">Register</a></li>
         </ul>
     </header>
 
